@@ -14,6 +14,8 @@ class MountainCarAgent():
         self.env = gym.make('MountainCar-v0')
         self.upper_bounds = [self.env.observation_space.high[0], self.env.observation_space.high[1]]
         self.lower_bounds = [self.env.observation_space.low[0], self.env.observation_space.low[1]]
+        
+        ### Initializing the Q table only once so that it accumulates knowledge over time 
         self.Q_table = np.zeros(self.buckets + (self.env.action_space.n,))
         self.N = np.zeros(self.buckets + (self.env.action_space.n,))
 
@@ -98,6 +100,7 @@ class MountainCarAgent():
             i+=1
 #             print("Start")/
             total_R=0
+            ### Reinitializing the states at the beginning of each episode 
             current_state = self.discretize_state(self.env.reset(options={(-0.6,-0.4), 0})[0])
             self.lr = self.get_lr(e)
             self.explore_rate = self.get_explore_rate(e)
